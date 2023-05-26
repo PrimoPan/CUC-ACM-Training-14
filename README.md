@@ -34,4 +34,4 @@ int main() {
     cout << dp[1][n] << endl;
     return 0;
 }
-C++```
+```
