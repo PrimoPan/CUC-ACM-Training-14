@@ -35,3 +35,108 @@ int main() {
     return 0;
 }
 ```
+
+
+#### Problem 2
+```
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+#include<string>
+#include<cstdlib>
+#include<queue>
+#include<set>
+#include<map>
+#include<stack>
+#include<ctime>
+#include<vector>
+#define INF 0x3f3f3f3f
+#define PI acos(-1.0)
+#define N 1001
+#define MOD 10007
+#define E 1e-6
+#define LL long long
+using namespace std;
+char str[N];
+int pos[N][N];
+int dp[N][N];
+bool judge(int i,int j)
+{
+    if(str[i]=='('&&str[j]==')')
+        return true;
+    if(str[i]=='['&&str[j]==']')
+        return true;
+    return false;
+}
+void print(int i,int j)
+{
+    if(i>j)
+        return;
+    if(i==j)
+    {
+        if(str[i]=='('||str[i]==')')
+            printf("()");
+        else
+            printf("[]");
+    }
+    else if(pos[i][j]==-1)
+    {
+        printf("%c",str[i]);
+        print(i+1,j-1);
+        printf("%c",str[j]);
+    }
+    else
+    {
+        print(i,pos[i][j]);
+        print(pos[i][j]+1,j);
+    }
+}
+int main()
+{
+    while(gets(str))
+    {
+        int n=strlen(str);
+        if(n==0)
+        {
+            printf("\n");
+            continue;
+        }
+ 
+        memset(dp,0,sizeof(dp));
+        for(int i=0;i<n;i++)
+            dp[i][i]=1;
+ 
+        for(int len=1;len<n;len++)
+        {
+            for(int i=0;i<n-len;i++)
+            {
+                int j=len+i;
+                dp[i][j]=INF;
+ 
+                if(judge(i,j))
+                {
+                    if(dp[i][j]>dp[i+1][j-1])
+                        dp[i][j]=dp[i+1][j-1];
+                    pos[i][j]=-1;
+                }
+ 
+                for(int k=i;k<j;k++)
+                {
+                    int temp=dp[i][k]+dp[k+1][j];
+                    if(dp[i][j]>temp)
+                    {
+                        dp[i][j]=temp;
+                        pos[i][j]=k;
+                    }
+                }
+            }
+        }
+        print(0,n-1);
+        printf("\n");
+    }
+ 
+    return 0;
+}
+```
