@@ -183,3 +183,59 @@ int main() {
   return 0;
 }
 ```
+
+
+#### Problem 4
+```
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;
+int a[1000][1000];
+int dp[10000],vis[10000];
+queue<int>q;
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(int i=1;i<=m;i++)
+        for(int j=1;j<=n;j++)
+            scanf("%d",&a[i][j]);
+    int siz=0;
+    for(int i=1;i<=n;i++) siz=siz<<1|1;
+    vis[siz]=1;
+    q.push(siz);
+    int flag=0;
+    while(!q.empty())
+    {
+        int now=q.front();
+        q.pop();
+        int ans=now;
+        for(int i=1;i<=m;i++)
+        {
+            now=ans;
+            for(int j=1;j<=n;j++)
+            {
+                if(a[i][j]==-1)
+                    now=now|(1<<(j-1));
+                else if(a[i][j]==1)
+                    now=now&~(1<<(j-1));
+            }
+            if(vis[now]==0)
+            {
+                q.push(now);
+                dp[now]=dp[ans]+1;
+                vis[now]=1;
+                if(now==0)
+                {
+                    flag=1;
+                    printf("%d\n",dp[0]);
+                    break;
+                }
+            }
+        }
+    }
+    if(flag==0) printf("-1\n");
+    system("pause");
+    return 0;
+}
+
+```
